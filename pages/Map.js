@@ -4,7 +4,7 @@ class Register extends Component {
   render() {
     return (
       <View>
-        <Text>Register screen</Text>
+        <Text>Maps screen</Text>
       </View>
     );
   }

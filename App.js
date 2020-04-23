@@ -22,15 +22,26 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import Register from './pages/Register';
+
 function HomeScreen({navigation}) {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>Home Screen</Text>
       <Button
         title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
+        onPress={() => navigation.navigate('Home2')}
       />
     </View>
+  );
+}
+
+function HomeScreen2({navigation}) {
+  return (
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Register/>
+      </View>
+
   );
 }
 
@@ -60,6 +71,7 @@ const App: () => React$Node = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Home2" component={HomeScreen2} />
         <Stack.Screen name="Details" component={DetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
