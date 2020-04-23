@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 
-class Post extends Component {
+class Register extends Component {
   render() {
     return (
       <View>
-        <Text>Post js screen</Text>
+        <Text>Register screen</Text>
       </View>
     );
   }
 }
 
-export default Post;
+export default Register;
