@@ -1,4 +1,6 @@
+import 'react-native-gesture-handler';
 import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,7 +21,7 @@ import {
 const App: () => React$Node = () => {
   return (
     <View>
-      <Text>App.js screen</Text>
+      <Text>App.js screen 3</Text>
     </View>
   );
 };
