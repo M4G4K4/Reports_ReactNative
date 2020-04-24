@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 
 import {
   SafeAreaView,
@@ -15,6 +15,14 @@ import {
 } from 'react-native';
 
 function Login({navigation}) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const login = () => {
+    console.log('Username: ' + username + ' - Password: ' + password);
+    //navigation.navigate('Maps');
+  };
+
   return (
     <KeyboardAvoidingView style={styles.background}>
       <View style={styles.containerLogo}>
@@ -25,21 +33,23 @@ function Login({navigation}) {
           style={styles.input}
           placeholder="Email"
           autoCorrect={false}
-          onChangeText={() => {}}
+          onChangeText={(text) => setUsername(text)}
         />
 
         <TextInput
           style={styles.input}
           placeholder="Password"
           autoCorrect={false}
-          onChangeText={() => {}}
+          onChangeText={(text) => setPassword(text)}
         />
 
-        <TouchableOpacity style={styles.btnLogin}>
+        <TouchableOpacity style={styles.btnLogin} onPress={login}>
           <Text style={styles.textLogin}>Login</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnRegister}>
+        <TouchableOpacity
+          style={styles.btnRegister}
+          onPress={() => navigation.navigate('Register')}>
           <Text style={styles.textRegister}>Register</Text>
         </TouchableOpacity>
       </View>
