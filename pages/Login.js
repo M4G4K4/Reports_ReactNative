@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-
+import axios from 'axios';
 import {
   SafeAreaView,
   StyleSheet,
@@ -51,6 +51,12 @@ function Login({navigation}) {
           style={styles.btnRegister}
           onPress={() => navigation.navigate('Register')}>
           <Text style={styles.textRegister}>Register</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.btnRegister}
+          onPress={() => navigation.navigate('Notes')}>
+          <Text style={styles.textRegister}>Notes</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
