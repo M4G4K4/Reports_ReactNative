@@ -10,17 +10,17 @@ import {
   Button,
 } from 'react-native';
 
-
-function Register({navigation}) {
+function Login({navigation}) {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Register Screen</Text>
+      <Text>Login Screen</Text>
       <Button
-        title="Go to Home Screen"
-        onPress={() => navigation.navigate('Home')}
+        title="Go to Register Screen"
+        onPress={() => navigation.navigate('Register')}
       />
+      <Text />
     </View>
   );
 }
 
-export default Register;
+export default Login;

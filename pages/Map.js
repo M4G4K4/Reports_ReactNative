@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
+import {Text} from 'react-native';
 
 class Register extends Component {
   render() {
     return (
-      <View>
-        <Text>Maps screen</Text>
-      </View>
+        <Text>Maps</Text>
     );
   }
 }
