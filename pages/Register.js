@@ -12,17 +12,53 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
+import axios from 'axios';
 
 function Register({navigation}) {
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const regist = () => {
-    console.log(
-      'Username: ' + username + ' - Password: ' + password + ' - Name: ' + name,
+  function alert() {
+    Alert.alert(
+      'Alert Title',
+      'My Alert Msg',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      {cancelable: false},
     );
+  }
+
+  const regist = () => {
+    let data = {
+      email: username,
+      password: password,
+      name: name,
+    };
+    axios
+      .post('http://64.227.36.62/api/registerUser', data)
+      .then((response) => {
+        if (response.status == 201) {
+          console.log('Sign up sucess');
+          Alert.alert(
+            'New user created',
+            '',
+            [{text: 'OK', onPress: () => navigation.navigate('Login')}],
+            {cancelable: false},
+          );
+        }
+      })
+      .catch((error) => {});
   };
 
   return (
@@ -53,7 +89,7 @@ function Register({navigation}) {
         />
 
         <TouchableOpacity style={styles.btnRegister} onPress={regist}>
-          <Text style={styles.textRegister}>Regist</Text>
+          <Text style={styles.textRegister}>Sign Up</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

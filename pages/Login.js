@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import axios from 'axios';
 import {
   SafeAreaView,
@@ -10,17 +10,43 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
+  FlatList,
+  ActivityIndicator,
   StatusBar,
   Button,
+  Alert,
 } from 'react-native';
 
 function Login({navigation}) {
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const login = () => {
-    console.log('Username: ' + username + ' - Password: ' + password);
-    //navigation.navigate('Maps');
+    axios
+      .get('http://64.227.36.62/api/checkUser2/' + username + '/' + password)
+      .then((response) => {
+        if (response.status == 200) {
+          console.log('Return sucesso');
+          // TODO: pass ID to next screen
+          navigation.navigate('Maps');
+        } else {
+          console.log('Erro');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        // Alert wrong user
+        Alert.alert(
+          'Wrong credentials',
+          'No user found with the current combination of email and password',
+          [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          {cancelable: false},
+        );
+      });
   };
 
   return (
