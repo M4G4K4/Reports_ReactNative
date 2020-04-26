@@ -1,5 +1,6 @@
 import React, {Component, useState, useEffect} from 'react';
 import axios from 'axios';
+import {sha256} from 'react-native-sha256';
 import {
   SafeAreaView,
   StyleSheet,
@@ -22,10 +23,17 @@ function Login({navigation}) {
   const [data, setData] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [hash, setHash] = useState('');
+
+  function encryptPasswrod(password) {
+    sha256(password).then((hash) => {
+      setHash(hash);
+    });
+  }
 
   const login = () => {
     axios
-      .get('http://64.227.36.62/api/checkUser2/' + username + '/' + password)
+      .get('http://64.227.36.62/api/checkUser2/' + username + '/' + hash)
       .then((response) => {
         if (response.status == 200) {
           console.log('Return sucesso');
@@ -41,9 +49,7 @@ function Login({navigation}) {
         Alert.alert(
           'Wrong credentials',
           'No user found with the current combination of email and password',
-          [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-          ],
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           {cancelable: false},
         );
       });
@@ -66,7 +72,7 @@ function Login({navigation}) {
           style={styles.input}
           placeholder="Password"
           autoCorrect={false}
-          onChangeText={(text) => setPassword(text)}
+          onChangeText={(text) => encryptPasswrod(text)}
         />
 
         <TouchableOpacity style={styles.btnLogin} onPress={login}>

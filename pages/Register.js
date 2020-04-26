@@ -1,5 +1,6 @@
 import React, {Component, useState} from 'react';
-
+import {sha256} from 'react-native-sha256';
+import axios from 'axios';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,7 +15,6 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import axios from 'axios';
 
 function Register({navigation}) {
   const [isLoading, setLoading] = useState(true);
@@ -22,6 +22,7 @@ function Register({navigation}) {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [hash, setHash] = useState('');
 
   function alert() {
     Alert.alert(
@@ -39,12 +40,19 @@ function Register({navigation}) {
     );
   }
 
+  function encryptPasswrod(password) {
+    sha256(password).then((hash) => {
+      setHash(hash);
+    });
+  }
+
   const regist = () => {
     let data = {
       email: username,
-      password: password,
+      password: hash,
       name: name,
     };
+
     axios
       .post('http://64.227.36.62/api/registerUser', data)
       .then((response) => {
@@ -85,7 +93,7 @@ function Register({navigation}) {
           style={styles.input}
           placeholder="Password"
           autoCorrect={false}
-          onChangeText={(text) => setPassword(text)}
+          onChangeText={(text) => encryptPasswrod(text)}
         />
 
         <TouchableOpacity style={styles.btnRegister} onPress={regist}>
