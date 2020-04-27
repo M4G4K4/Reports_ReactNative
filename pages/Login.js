@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
-
+import React, {Component, useState, useEffect} from 'react';
+import axios from 'axios';
+import {sha256} from 'react-native-sha256';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,11 +11,50 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
+  FlatList,
+  ActivityIndicator,
   StatusBar,
   Button,
+  Alert,
 } from 'react-native';
 
 function Login({navigation}) {
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [hash, setHash] = useState('');
+
+  function encryptPasswrod(password) {
+    sha256(password).then((hash) => {
+      setHash(hash);
+    });
+  }
+
+  const login = () => {
+    axios
+      .get('http://64.227.36.62/api/checkUser2/' + username + '/' + hash)
+      .then((response) => {
+        if (response.status == 200) {
+          console.log('Return sucesso');
+          // TODO: pass ID to next screen
+          navigation.navigate('Maps');
+        } else {
+          console.log('Erro');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        // Alert wrong user
+        Alert.alert(
+          'Wrong credentials',
+          'No user found with the current combination of email and password',
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+          {cancelable: false},
+        );
+      });
+  };
+
   return (
     <KeyboardAvoidingView style={styles.background}>
       <View style={styles.containerLogo}>
@@ -25,22 +65,30 @@ function Login({navigation}) {
           style={styles.input}
           placeholder="Email"
           autoCorrect={false}
-          onChangeText={() => {}}
+          onChangeText={(text) => setUsername(text)}
         />
 
         <TextInput
           style={styles.input}
           placeholder="Password"
           autoCorrect={false}
-          onChangeText={() => {}}
+          onChangeText={(text) => encryptPasswrod(text)}
         />
 
-        <TouchableOpacity style={styles.btnLogin}>
+        <TouchableOpacity style={styles.btnLogin} onPress={login}>
           <Text style={styles.textLogin}>Login</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnRegister}>
+        <TouchableOpacity
+          style={styles.btnRegister}
+          onPress={() => navigation.navigate('Register')}>
           <Text style={styles.textRegister}>Register</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.btnRegister}
+          onPress={() => navigation.navigate('Notes')}>
+          <Text style={styles.textRegister}>Notes</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
