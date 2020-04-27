@@ -52,7 +52,6 @@ function Register({navigation}) {
       password: hash,
       name: name,
     };
-
     axios
       .post('http://64.227.36.62/api/registerUser', data)
       .then((response) => {
