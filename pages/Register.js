@@ -16,6 +16,7 @@ import {
   Alert,
 } from 'react-native';
 
+
 function Register({navigation}) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
