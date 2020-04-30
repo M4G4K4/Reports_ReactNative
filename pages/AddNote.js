@@ -1,6 +1,6 @@
 import React, {Component, useState} from 'react';
 const Realm = require('realm');
-
+import {ListItem} from 'react-native-elements';
 import {createStackNavigator} from '@react-navigation/stack';
 const Stack = createStackNavigator();
 import {
@@ -28,7 +28,7 @@ function StackScreen() {
   );
 }
 
-const saveNote = (title, description) => {
+const saveNote = (title, description,navigation) => {
   var dia = new Date().getDate();
   var month = new Date().getMonth() + 1;
   var year = new Date().getFullYear();
@@ -77,13 +77,15 @@ const saveNote = (title, description) => {
         {cancelable: false},
       );
     });
+
+  navigation.navigate('Notes');
 };
 
 function AddNote({navigation}) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => saveNote(title, description)}>
+        <TouchableOpacity onPress={() => saveNote(title, description,navigation)}>
           <Text>Save</Text>
         </TouchableOpacity>
       ),
