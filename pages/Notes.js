@@ -23,10 +23,7 @@ import {
   Alert,
   FlatList,
 } from 'react-native';
-
-function refresh() {
-  Notes();
-}
+import useForceUpdate from 'use-force-update';
 
 // Main function
 function Notes({navigation}) {
@@ -44,6 +41,7 @@ function Notes({navigation}) {
     ],
   });
   var newList = realm.objects('notes');
+
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

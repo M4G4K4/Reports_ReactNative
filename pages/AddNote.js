@@ -18,8 +18,6 @@ import {
   Alert,
 } from 'react-native';
 import Notes from './Notes';
-import {useSafeArea} from 'react-native-safe-area-context';
-
 
 
 const saveNote = (title, description, navigation) => {
@@ -33,12 +31,15 @@ const saveNote = (title, description, navigation) => {
   if (month < 10) {
     month = '0' + month;
   }
-  if(dia < 10){
+  if (dia < 10) {
     dia = '0' + dia;
+  }
+  if (minutes < 10) {
+    minutes = '0' + minutes;
   }
   var date = dia + '/' + month + '/' + year + ' - ' + hour + ':' + minutes;
 
-  Realm.open({
+  const realm = new Realm({
     schema: [
       {
         name: 'notes',
@@ -50,31 +51,17 @@ const saveNote = (title, description, navigation) => {
         },
       },
     ],
-  })
-    .then((realm) => {
-      realm.write(() => {
-        var ID = realm.objects('notes').length + 1;
-        const myNote = realm.create('notes', {
-          id: ID,
-          title: title,
-          description: description,
-          createDate: date,
-        });
-      });
-      realm.close();
-    })
-    .catch((error) => {
-      console.log(error);
-      Alert.alert(
-        'Error adding note',
-        '',
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-        {cancelable: false},
-      );
+  });
+
+  realm.write(() => {
+    var ID = realm.objects('notes').length + 1;
+    const myNote = realm.create('notes', {
+      id: ID,
+      title: title,
+      description: description,
+      createDate: date,
     });
-  //navigation.navigate('Notes');
-  //goBack();
-  Notes.refresh();
+  });
   navigation.navigate('Notes');
 };
 
