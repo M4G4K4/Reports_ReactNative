@@ -24,95 +24,26 @@ import {
   FlatList,
 } from 'react-native';
 
-function StackScreen() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Notes" component={Notes} />
-    </Stack.Navigator>
-  );
-}
-
-function editNote() {
-  console.log('Edit pressed');
-}
-
-function deleteNote() {
-  console.log('Delete pressed');
-}
-
-function notesList() {
-  const NoteSchema = {
-    name: 'Notes',
-    properties: {
-      title: 'string',
-      description: 'string',
-      createDate: 'string',
-    },
-  };
-
-  Realm.open({schema: [NoteSchema]})
-    .then((realm) => {
-      realm.close();
-    })
-    .catch((error) => {
-      console.log(error);
-      Alert.alert(
-        'Error showing notes',
-        '',
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-        {cancelable: false},
-      );
-    });
+function refresh() {
+  Notes();
 }
 
 // Main function
 function Notes({navigation}) {
-  const [notes, setNotes] = React.useState([]);
-
-  const list = [
-    {
-      name: 'Amy Farha',
-      avatar_url:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-      subtitle: 'Vice President',
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      subtitle: 'Vice Chairman',
-    },
-  ];
-  const list2 = [
-    {
-      '0': {createDate: '30/04/2020 - 15:57', description: 'ss', title: 'aa'},
-      '1': {
-        createDate: '30/04/2020 - 15:57',
-        description: '2nd Description',
-        title: '2nd Title',
+  const realm = new Realm({
+    schema: [
+      {
+        name: 'notes',
+        properties: {
+          id: {type: 'int', default: 0},
+          title: 'string',
+          description: 'string',
+          createDate: 'string',
+        },
       },
-      '2': {createDate: '30/04/2020 - 19:35', description: 'ss', title: 'ss'},
-      '3': {
-        createDate: '30/04/2020 - 19:36',
-        description: 'sdfsdfds',
-        title: 'ss',
-      },
-    },
-  ];
-  const list3 = {
-    '0': {createDate: '30/04/2020 - 15:57', description: 'ss', title: 'aa'},
-    '1': {
-      createDate: '30/04/2020 - 15:57',
-      description: '2nd Description',
-      title: '2nd Title',
-    },
-    '2': {createDate: '30/04/2020 - 19:35', description: 'ss', title: 'ss'},
-    '3': {
-      createDate: '30/04/2020 - 19:36',
-      description: 'sdfsdfds',
-      title: 'ss',
-    },
-  };
+    ],
+  });
+  var newList = realm.objects('notes');
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -133,15 +64,15 @@ function Notes({navigation}) {
   return (
     <View style={styles.MainContainer}>
       <FlatList
-        data={list}
+        data={newList}
         ItemSeparatorComponent={ListViewItemSeparator}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
           <View style={{backgroundColor: 'white', padding: 20}}>
             <Text>Id: {item.id}</Text>
-            <Text>Nome: {item.name}</Text>
-            <Text>Cidade: {item.subtitle}</Text>
-            <Text>Telefone: {item.telefone}</Text>
+            <Text>Title: {item.title}</Text>
+            <Text>Description: {item.description}</Text>
+            <Text>Date: {item.createDate}</Text>
           </View>
         )}
       />

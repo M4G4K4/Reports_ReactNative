@@ -20,15 +20,9 @@ import {
 import Notes from './Notes';
 import {useSafeArea} from 'react-native-safe-area-context';
 
-function StackScreen() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="AddNote" component={AddNote} />
-    </Stack.Navigator>
-  );
-}
 
-const saveNote = (title, description,navigation) => {
+
+const saveNote = (title, description, navigation) => {
   var dia = new Date().getDate();
   var month = new Date().getMonth() + 1;
   var year = new Date().getFullYear();
@@ -39,33 +33,34 @@ const saveNote = (title, description,navigation) => {
   if (month < 10) {
     month = '0' + month;
   }
+  if(dia < 10){
+    dia = '0' + dia;
+  }
   var date = dia + '/' + month + '/' + year + ' - ' + hour + ':' + minutes;
-  console.log(date);
-  console.log(title);
-  console.log(description);
 
-  const NoteSchema = {
-    name: 'Notes',
-    properties: {
-      title: 'string',
-      description: 'string',
-      createDate: 'string',
-    },
-  };
-
-  Realm.open({schema: [NoteSchema]})
+  Realm.open({
+    schema: [
+      {
+        name: 'notes',
+        properties: {
+          id: {type: 'int', default: 0},
+          title: 'string',
+          description: 'string',
+          createDate: 'string',
+        },
+      },
+    ],
+  })
     .then((realm) => {
       realm.write(() => {
-        const myNote = realm.create('Notes', {
+        var ID = realm.objects('notes').length + 1;
+        const myNote = realm.create('notes', {
+          id: ID,
           title: title,
           description: description,
           createDate: date,
         });
       });
-
-      //const notes = realm.objects('Notes');
-      //console.log(notes);
-
       realm.close();
     })
     .catch((error) => {
@@ -77,7 +72,9 @@ const saveNote = (title, description,navigation) => {
         {cancelable: false},
       );
     });
-
+  //navigation.navigate('Notes');
+  //goBack();
+  Notes.refresh();
   navigation.navigate('Notes');
 };
 
@@ -85,7 +82,8 @@ function AddNote({navigation}) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => saveNote(title, description,navigation)}>
+        <TouchableOpacity
+          onPress={() => saveNote(title, description, navigation)}>
           <Text>Save</Text>
         </TouchableOpacity>
       ),
