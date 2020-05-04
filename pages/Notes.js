@@ -25,9 +25,13 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 
+var editRefresh = false;
+
 // Main function
 function Notes({route, navigation}) {
   const [refresh, setRefresh] = useState(true);
+  // Refresh list after edit
+  editRefresh = route.params;
 
   const realm = new Realm({
     schema: [
@@ -82,6 +86,7 @@ function Notes({route, navigation}) {
       let task = realm.objects('notes').filtered('id = ' + item.id);
       realm.delete(task);
     });
+    // Refresh list after delete
     setRefresh(false);
   };
 
@@ -93,7 +98,7 @@ function Notes({route, navigation}) {
     <View style={styles.MainContainer}>
       <FlatList
         data={newList}
-        extraData={refresh}
+        extraData={(refresh, editRefresh)}
         ItemSeparatorComponent={ListViewItemSeparator}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (

@@ -20,7 +20,7 @@ import {
 
 import Notes from './Notes';
 
-const saveNote = (title, description, navigation) => {
+const editNote = (title, description, navigation, id) => {
   var dia = new Date().getDate();
   var month = new Date().getMonth() + 1;
   var year = new Date().getFullYear();
@@ -52,25 +52,30 @@ const saveNote = (title, description, navigation) => {
       },
     ],
   });
+
+  realm.write(() => {
+    var note = realm.objects('notes').filtered('id =' + id);
+    if (note.length > 0) {
+      note[0].title = title;
+      note[0].description = description;
+      note[0].createDate = date;
+    }
+  });
+
+  navigation.navigate('Notes', true);
 };
 
 function EditNote({route, navigation}) {
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
-  const [id, setID] = useState(0);
-  const [date, setDate] = useState('');
-
-  const itemID = route.params.id;
-  const itemTitle = route.params.title;
-  const itemDescription = route.params.description;
-  const itemDate = route.params.createDate;
-
+  const [description, setDescription] = useState(route.params.description);
+  const [title, setTitle] = useState(route.params.title);
+  const [id, setID] = useState(route.params.id);
+  const [date, setDate] = useState(route.params.createDate);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => saveNote(title, description, navigation)}>
+          onPress={() => editNote(title, description, navigation, id)}>
           <Text>Save</Text>
         </TouchableOpacity>
       ),
