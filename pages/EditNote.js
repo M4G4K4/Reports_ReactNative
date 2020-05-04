@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+
 import Notes from './Notes';
 
 const saveNote = (title, description, navigation) => {
@@ -53,18 +54,12 @@ const saveNote = (title, description, navigation) => {
   });
 
   realm.write(() => {
-    var ID = realm.objects('notes').length + 1;
-    const myNote = realm.create('notes', {
-      id: ID,
-      title: title,
-      description: description,
-      createDate: date,
-    });
+
   });
-  navigation.navigate('Notes');
+
 };
 
-function AddNote({navigation}) {
+function EditNote({navigation}) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -105,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddNote;
+export default EditNote;

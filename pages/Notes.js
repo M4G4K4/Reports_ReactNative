@@ -22,11 +22,13 @@ import {
   TouchableOpacity,
   Alert,
   FlatList,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import useForceUpdate from 'use-force-update';
 
 // Main function
 function Notes({navigation}) {
+  const [refresh, setRefresh] = useState(true);
+
   const realm = new Realm({
     schema: [
       {
@@ -59,19 +61,50 @@ function Notes({navigation}) {
     );
   };
 
+  const ActionOnNote = (item) => {
+    Alert.alert(
+      'Actions on a note',
+      '',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {text: 'Delete', onPress: () => deleteNote(item)},
+        {text: 'Edit', onPress: () => editNote(item)},
+      ],
+      {cancelable: false},
+    );
+  };
+
+  const deleteNote = (item) => {
+    console.log('Delete');
+    realm.write(() => {
+      let task = realm.objects('notes').filtered('id = ' + item.id);
+      realm.delete(task);
+    });
+    setRefresh(false);
+  };
+
+  const editNote = (item) => {
+    navigation.navigate('EditNote');
+  };
+
   return (
     <View style={styles.MainContainer}>
       <FlatList
         data={newList}
+        extraData={refresh}
         ItemSeparatorComponent={ListViewItemSeparator}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
-          <View style={{backgroundColor: 'white', padding: 20}}>
-            <Text>Id: {item.id}</Text>
-            <Text>Title: {item.title}</Text>
-            <Text>Description: {item.description}</Text>
-            <Text>Date: {item.createDate}</Text>
-          </View>
+          <TouchableOpacity onPress={() => ActionOnNote(item)}>
+            <View style={{backgroundColor: 'white', padding: 15}}>
+              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.description}>{item.description}</Text>
+              <Text style={styles.date}>{item.createDate}</Text>
+            </View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -115,6 +148,18 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 20,
     color: '#000',
+  },
+  title: {
+    fontSize: 22,
+  },
+  description: {
+    fontSize: 16,
+    left: 10,
+    marginBottom: 15,
+  },
+  date: {
+    fontSize: 11,
+    left: 10,
   },
 });
 
