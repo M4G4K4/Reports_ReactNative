@@ -26,7 +26,7 @@ import {
 } from 'react-native';
 
 // Main function
-function Notes({navigation}) {
+function Notes({route, navigation}) {
   const [refresh, setRefresh] = useState(true);
 
   const realm = new Realm({
@@ -43,7 +43,6 @@ function Notes({navigation}) {
     ],
   });
   var newList = realm.objects('notes');
-
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -87,7 +86,7 @@ function Notes({navigation}) {
   };
 
   const editNote = (item) => {
-    navigation.navigate('EditNote');
+    navigation.navigate('EditNote', item);
   };
 
   return (

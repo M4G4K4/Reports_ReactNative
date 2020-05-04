@@ -52,14 +52,20 @@ const saveNote = (title, description, navigation) => {
       },
     ],
   });
-
-  realm.write(() => {
-
-  });
-
 };
 
-function EditNote({navigation}) {
+function EditNote({route, navigation}) {
+  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState('');
+  const [id, setID] = useState(0);
+  const [date, setDate] = useState('');
+
+  const itemID = route.params.id;
+  const itemTitle = route.params.title;
+  const itemDescription = route.params.description;
+  const itemDate = route.params.createDate;
+
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -71,14 +77,12 @@ function EditNote({navigation}) {
     });
   });
 
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
-
   return (
     <View>
       <TextInput
         placeholder="Title"
         autoCorrect={true}
+        value={title}
         onChangeText={(text) => setTitle(text)}
       />
 
@@ -86,6 +90,7 @@ function EditNote({navigation}) {
         multiline={true}
         placeholder="Title"
         numberOfLines={10}
+        value={description}
         onChangeText={(text) => setDescription(text)}
       />
     </View>
