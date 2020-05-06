@@ -39,8 +39,16 @@ const App: () => React$Node = () => {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Maps" component={Maps} />
-        <Stack.Screen name="Notes" component={Notes} />
+        <Stack.Screen
+          name="Maps"
+          component={Maps}
+          options={{headerLeft: false}}
+        />
+        <Stack.Screen
+          name="Notes"
+          component={Notes}
+          options={{headerLeft: false}}
+        />
         <Stack.Screen name="AddNote" component={AddNote} />
         <Stack.Screen name="EditNote" component={EditNote} />
       </Stack.Navigator>
