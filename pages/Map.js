@@ -12,11 +12,27 @@ import axios from 'axios';
 import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 let markersURL = 'https://www.emergency.wa.gov.au/data/incident_FCAD.json';
 
+//TODO: Button to add new report
+// Add report
+// Delete report
+// Edit report
+// Custom view to show the marker OU Style para por mais o menos direito
+
 // Main function
 function Map({route, navigation}) {
   const [marker, setMarker] = useState([]);
   const [call, setCall] = useState(true);
   const [userID, setUserID] = useState(route.params.ID);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate('AddReport')}>
+          <Text>Add</Text>
+        </TouchableOpacity>
+      ),
+    });
+  });
 
   const getMarker = () => {
     fetch('http://64.227.36.62/api/getAllReports')
@@ -50,7 +66,7 @@ function Map({route, navigation}) {
               longitude: marker.latitude,
             }}>
             <Callout>
-              <Text>{marker.description}</Text>
+              <Text style={styles.size}>{marker.description}</Text>
               <Text>{marker.morada}</Text>
             </Callout>
           </Marker>
@@ -66,6 +82,9 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  size: {
+    fontSize: 20,
   },
 });
 
