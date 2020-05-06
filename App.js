@@ -27,6 +27,8 @@ import Register from './pages/Register';
 import Maps from './pages/Map';
 import Login from './pages/Login';
 import Notes from './pages/Notes';
+import AddNote from './pages/AddNote';
+import EditNote from './pages/EditNote';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +41,8 @@ const App: () => React$Node = () => {
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Maps" component={Maps} />
         <Stack.Screen name="Notes" component={Notes} />
+        <Stack.Screen name="AddNote" component={AddNote} />
+        <Stack.Screen name="EditNote" component={EditNote} />
       </Stack.Navigator>
     </NavigationContainer>
   );
