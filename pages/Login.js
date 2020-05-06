@@ -38,7 +38,11 @@ function Login({navigation}) {
         if (response.status == 200) {
           console.log('Return sucesso');
           // TODO: pass ID to next screen
-          navigation.navigate('Maps');
+          console.log(response.data.ID);
+          let data = {
+            ID: response.data.ID,
+          };
+          navigation.navigate('Maps', data);
         } else {
           console.log('Erro');
         }

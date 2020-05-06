@@ -16,6 +16,7 @@ let markersURL = 'https://www.emergency.wa.gov.au/data/incident_FCAD.json';
 function Map({route, navigation}) {
   const [marker, setMarker] = useState([]);
   const [call, setCall] = useState(true);
+  const [userID, setUserID] = useState(route.params.ID);
 
   const getMarker = () => {
     fetch('http://64.227.36.62/api/getAllReports')
@@ -58,7 +59,6 @@ function Map({route, navigation}) {
     </View>
   ); // End return
 }
-
 
 const styles = StyleSheet.create({
   container: {
