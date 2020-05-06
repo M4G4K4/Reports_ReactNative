@@ -1,5 +1,12 @@
 import React, {Component, useState} from 'react';
-import {Alert, FlatList, Text, TouchableOpacity, StyleSheet,View} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  View,
+} from 'react-native';
 import MapView from 'react-native-maps';
 
 function Map({route, navigation}) {
