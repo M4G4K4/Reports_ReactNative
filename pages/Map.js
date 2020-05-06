@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 
+// Main function
 function Map({route, navigation}) {
   return (
     <MapView
