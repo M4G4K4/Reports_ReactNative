@@ -1,6 +1,7 @@
 import React, {Component, useState} from 'react';
 import {ListItem} from 'react-native-elements';
 import {createStackNavigator} from '@react-navigation/stack';
+import {RNCamera} from 'react-native-camera';
 const Stack = createStackNavigator();
 import {
   SafeAreaView,
@@ -16,18 +17,13 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import {RNCamera, FaceDetector} from 'react-native-camera';
 
 function AddReport({navigation}) {
   const takePicture = async () => {
-    try {
-      if (this.camera) {
-        const options = {quality: 0.5, base64: true};
-        const data = await this.camera.takePictureAsync(options);
-        console.log(data.uri);
-      }
-    } catch (e) {
-      console.log(e);
+    if (this.camera) {
+      const options = {quality: 0.5, base64: true};
+      const data = await this.camera.takePictureAsync(options);
+      console.log(data.uri);
     }
   };
 
@@ -43,12 +39,7 @@ function AddReport({navigation}) {
 
   return (
     <View style={styles.container}>
-      <RNCamera
-        style={{flex: 1, alignItems: 'center'}}
-        ref={(ref) => {
-          this.camera = ref;
-        }}
-      />
+      <Text>SSSSSS</Text>
     </View>
   );
 } // end Main function
@@ -57,7 +48,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'black',
   },
   preview: {
     flex: 1,

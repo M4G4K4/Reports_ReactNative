@@ -37,7 +37,6 @@ function Login({navigation}) {
       .then((response) => {
         if (response.status == 200) {
           console.log('Return sucesso');
-          // TODO: pass ID to next screen
           console.log(response.data.ID);
           let data = {
             ID: response.data.ID,
