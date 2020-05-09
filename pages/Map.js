@@ -22,12 +22,13 @@ let markersURL = 'https://www.emergency.wa.gov.au/data/incident_FCAD.json';
 function Map({route, navigation}) {
   const [marker, setMarker] = useState([]);
   const [call, setCall] = useState(true);
-  const [userID, setUserID] = useState(route.params.ID);
+  const [userID, setUserID] = useState(route.params);
+
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.navigate('AddReport')}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddReport',userID)}>
           <Text>Add</Text>
         </TouchableOpacity>
       ),
