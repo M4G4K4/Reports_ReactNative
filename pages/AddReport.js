@@ -17,14 +17,42 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+import {BsTypeUnderline} from 'react-icons/all';
+import ensureNativeModuleAvailable from 'react-native-vector-icons/lib/ensure-native-module-available';
 
 function AddReport({route, navigation}) {
   const [userID, setUserID] = useState(route.params.ID);
+  const [description, setDescription] = useState('');
 
+  const takeImage = () => {
+    navigation.navigate('TakeImage');
+  };
+
+  const saveReport = () => {
+    if (description == '' || description == ' ') {
+      Alert.alert(
+        'Description field need to be filled',
+        '',
+        [
+          {
+            text: '',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        {cancelable: false},
+      );
+    } else {
+      // Save note
+    }
+  };
+
+  // Btn na navigation bar
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={saveReport}>
           <Text>Save</Text>
         </TouchableOpacity>
       ),
@@ -33,7 +61,15 @@ function AddReport({route, navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text>Add Report Screen</Text>
+      <TouchableOpacity onPress={takeImage}>
+        <Text>Take Image</Text>
+      </TouchableOpacity>
+      <TextInput
+        style={styles.input}
+        placeholder="Report Description"
+        autoCorrect={false}
+        onChangeText={(text) => setDescription(text)}
+      />
     </View>
   );
 } // end Main function
@@ -41,21 +77,6 @@ function AddReport({route, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-  },
-  preview: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  capture: {
-    flex: 0,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    padding: 15,
-    paddingHorizontal: 20,
-    alignSelf: 'center',
-    margin: 20,
   },
 });
 
