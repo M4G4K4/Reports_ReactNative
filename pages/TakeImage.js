@@ -21,16 +21,17 @@ import {
 
 function TakeImage({route, navigation}) {
   const [userID, setUserID] = useState(route.params.ID);
-  console.log('takeImage ' + userID)
+  console.log('takeImage ' + userID);
   const takePicture = async () => {
     console.log('Snap btn cliked');
     if (this.camera) {
       const options = {quality: 0.5, base64: true};
       const data = await this.camera.takePictureAsync(options);
-      console.log(typeof data); // data 64 , object
-      console.log(typeof data.uri); // place , string
+      //data: is base 64
+      //console.log(data);
+      //console.log(data.uri); // place , string
       let cameraData = {
-        data: data,
+        data: data.base64,
         datauri: data.uri,
         ID: userID,
       };

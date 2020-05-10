@@ -24,7 +24,7 @@ function Map({route, navigation}) {
   const [call, setCall] = useState(true);
   const [userID, setUserID] = useState(route.params);
 
-  console.log('Map ' + userID);
+  console.log('Map ' + userID.ID);
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (

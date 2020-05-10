@@ -2,6 +2,7 @@ import React, {Component, useState} from 'react';
 import {ListItem} from 'react-native-elements';
 import {createStackNavigator} from '@react-navigation/stack';
 import {RNCamera} from 'react-native-camera';
+import ImagePicker from 'react-native-image-picker';
 const Stack = createStackNavigator();
 import {
   SafeAreaView,
@@ -23,17 +24,7 @@ import ensureNativeModuleAvailable from 'react-native-vector-icons/lib/ensure-na
 function AddReport({route, navigation}) {
   const [userID, setUserID] = useState(route.params.ID);
   const [description, setDescription] = useState('');
-  const [data, setData] = useState(route.params.data);
-  const [datauri, setDatauri] = useState(route.params.datauri);
 
-  console.log('AddReport ' + userID);
-
-  const takeImage = () => {
-    let user = {
-      ID: userID,
-    };
-    navigation.navigate('TakeImage', user);
-  };
 
   const saveReport = () => {
     if (description == '' || description == ' ') {
@@ -68,7 +59,7 @@ function AddReport({route, navigation}) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={takeImage}>
+      <TouchableOpacity>
         <Text>Take Image</Text>
       </TouchableOpacity>
       <TextInput
