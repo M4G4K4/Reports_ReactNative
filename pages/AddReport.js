@@ -23,9 +23,16 @@ import ensureNativeModuleAvailable from 'react-native-vector-icons/lib/ensure-na
 function AddReport({route, navigation}) {
   const [userID, setUserID] = useState(route.params.ID);
   const [description, setDescription] = useState('');
+  const [data, setData] = useState(route.params.data);
+  const [datauri, setDatauri] = useState(route.params.datauri);
+
+  console.log('AddReport ' + userID);
 
   const takeImage = () => {
-    navigation.navigate('TakeImage');
+    let user = {
+      ID: userID,
+    };
+    navigation.navigate('TakeImage', user);
   };
 
   const saveReport = () => {
