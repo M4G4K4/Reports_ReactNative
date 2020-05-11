@@ -21,10 +21,52 @@ import {
 import {BsTypeUnderline} from 'react-icons/all';
 import ensureNativeModuleAvailable from 'react-native-vector-icons/lib/ensure-native-module-available';
 
+var photo = '';
+
+function addPhoto() {
+  Alert.alert(
+    'Please choose:',
+    null,
+    [
+      {text: 'Camera', onPress: () => openCamera()},
+      {text: 'Gallery', onPress: () => openGalery()},
+    ],
+    {cancelable: true},
+    //clicking out side of alert will not cancel
+  );
+}
+
+function openCamera() {
+  ImagePicker.openCamera({
+    width: 300,
+    height: 400,
+    compressImageQuality: 0.8,
+    cropping: true,
+  }).then((image) => {
+    photo = image.path;
+    console.log(image.path);
+    console.log(photo);
+    console.log(image.size);
+  });
+}
+
+function openGalery() {
+  ImagePicker.openPicker({
+    width: 300,
+    height: 400,
+    compressImageQuality: 0.8,
+    cropping: true,
+  }).then((image) => {
+    photo = image.path;
+    console.log(image.path);
+    console.log(photo);
+    console.log(image.size);
+  });
+}
+
 function AddReport({route, navigation}) {
   const [userID, setUserID] = useState(route.params.ID);
   const [description, setDescription] = useState('');
-
 
   const saveReport = () => {
     if (description == '' || description == ' ') {
@@ -59,15 +101,23 @@ function AddReport({route, navigation}) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
-        <Text>Take Image</Text>
-      </TouchableOpacity>
-      <TextInput
-        style={styles.input}
-        placeholder="Report Description"
-        autoCorrect={false}
-        onChangeText={(text) => setDescription(text)}
-      />
+      <View>
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              addPhoto();
+            }}>
+            <Text
+              style={{
+                color: '#0B4F6C',
+                fontSize: 15,
+                fontWeight: 'bold',
+              }}>
+              ADD PHOTO
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 } // end Main function

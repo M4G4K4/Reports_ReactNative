@@ -61,7 +61,7 @@ const saveNote = (title, description, navigation) => {
       createDate: date,
     });
   });
-  navigation.navigate('Notes');
+  navigation.navigate('Notes', true);
 };
 
 function AddNote({navigation}) {

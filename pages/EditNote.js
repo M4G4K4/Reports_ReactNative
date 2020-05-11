@@ -1,6 +1,7 @@
 import React, {Component, useState} from 'react';
 const Realm = require('realm');
 import {ListItem} from 'react-native-elements';
+import ImagePicker from 'react-native-image-crop-picker';
 import {createStackNavigator} from '@react-navigation/stack';
 const Stack = createStackNavigator();
 import {
