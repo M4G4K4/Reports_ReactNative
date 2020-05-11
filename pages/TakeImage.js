@@ -1,7 +1,6 @@
 import React, {Component, useState, useEffect} from 'react';
 import axios from 'axios';
 import {sha256} from 'react-native-sha256';
-import {RNCamera} from 'react-native-camera';
 import {
   SafeAreaView,
   StyleSheet,
