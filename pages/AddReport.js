@@ -1,8 +1,10 @@
 import React, {Component, useState} from 'react';
 import {ListItem} from 'react-native-elements';
+import Geolocation from '@react-native-community/geolocation';
 import {createStackNavigator} from '@react-navigation/stack';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
+import Geocoder from 'react-native-geocoding';
 const Stack = createStackNavigator();
 import {
   SafeAreaView,
@@ -19,14 +21,17 @@ import {
   Alert,
   FlatList,
 } from 'react-native';
-import {BsTypeUnderline} from 'react-icons/all';
-import ensureNativeModuleAvailable from 'react-native-vector-icons/lib/ensure-native-module-available';
+import {add} from 'react-native-reanimated';
 
 const ClientID = '917669a10ae9a08';
 const ClientSecreat = 'ec6a7a3c715b601811debe8781e54c4f928964b2';
 var base64;
 var photo = '';
 var imgLink;
+
+var geolocation = {};
+var address;
+Geocoder.init('AIzaSyBPsA7_4kLm_VZefQZ20ESObvg5m8LHss0', {language: 'en'});
 
 function addPhoto() {
   Alert.alert(
@@ -96,18 +101,27 @@ function uploadPhoto(base64) {
     });
 }
 
+function getLocation() {
+  Geolocation.getCurrentPosition((info) => {
+    geolocation = info;
+  });
+}
+
+function getAddress() {
+  var long = geolocation.coords.longitude;
+  var lat = geolocation.coords.latitude;
+  Geocoder.from(41.55032, -8.42005)
+    .then((json) => {
+      console.log(json.results[0].address_components[0]);
+      address = json.results[0].address_components[0];
+    })
+    .catch((error) => console.warn(error));
+}
+
+// Main Function
 function AddReport({route, navigation}) {
   const [userID, setUserID] = useState(route.params.ID);
   const [description, setDescription] = useState('');
-
-  const renderImage = () => {
-    return (
-      <Image
-        source={{uri: 'data:image/jpeg;base64,' + base64}}
-        style={styles.images}
-      />
-    );
-  };
 
   const saveReport = () => {
     if (description == '' || description == ' ') {
@@ -140,6 +154,12 @@ function AddReport({route, navigation}) {
       );
     } else {
       // Save note
+      getLocation();
+      getAddress();
+      console.log(geolocation);
+      getAddress();
+      console.log(address);
+      /*
       var url = 'http://64.227.36.62/api/newReport';
       var data = {
         description: description,
@@ -157,6 +177,8 @@ function AddReport({route, navigation}) {
         .catch((err) => {
           console.log(err);
         });
+    }
+    */
     }
   };
 
@@ -196,6 +218,18 @@ function AddReport({route, navigation}) {
               onChangeText={(text) => setDescription(text)}
             />
           </View>
+
+          <Image
+            source={{uri: photo}}
+            style={{
+              resizeMode: 'stretch',
+              width: 100,
+              height: 100,
+              marginRight: 15,
+              borderBottomLeftRadius: 20,
+              borderTopLeftRadius: 20,
+            }}
+          />
         </View>
       </View>
     </View>
