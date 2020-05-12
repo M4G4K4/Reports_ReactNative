@@ -22,16 +22,20 @@ import {
   FlatList,
 } from 'react-native';
 import {add} from 'react-native-reanimated';
+console.disableYellowBox = true;
 
 const ClientID = '917669a10ae9a08';
 const ClientSecreat = 'ec6a7a3c715b601811debe8781e54c4f928964b2';
 var base64;
 var photo = '';
 var imgLink;
+var save = false;
 
-var geolocation = {};
+var latitude;
+var longitude;
 var address;
-Geocoder.init('AIzaSyBPsA7_4kLm_VZefQZ20ESObvg5m8LHss0', {language: 'en'});
+
+Geocoder.init('AIzaSyBPsA7_4kLm_VZefQZ20ESObvg5m8LHss0', {language: 'pt-BR'});
 
 function addPhoto() {
   Alert.alert(
@@ -60,6 +64,7 @@ function openCamera() {
     console.log('Path: ' + image.path);
     console.log('Photo: ' + photo);
     console.log('Size: ' + image.size);
+    save = true;
     uploadPhoto(image.data);
   });
 }
@@ -77,6 +82,7 @@ function openGalery() {
     console.log('Path: ' + image.path);
     console.log('Photo: ' + photo);
     console.log('Size: ' + image.size);
+    save = true;
     uploadPhoto(image.data);
   });
 }
@@ -101,19 +107,22 @@ function uploadPhoto(base64) {
     });
 }
 
+// ----------------------------------
 function getLocation() {
   Geolocation.getCurrentPosition((info) => {
-    geolocation = info;
+    latitude = parseFloat(info.coords.latitude);
+    longitude = parseFloat(info.coords.longitude);
+    getAddress(
+      parseFloat(info.coords.latitude),
+      parseFloat(info.coords.longitude),
+    );
   });
 }
 
-function getAddress() {
-  var long = geolocation.coords.longitude;
-  var lat = geolocation.coords.latitude;
-  Geocoder.from(41.55032, -8.42005)
+function getAddress(lat, long) {
+  Geocoder.from(lat, long)
     .then((json) => {
-      console.log(json.results[0].address_components[0]);
-      address = json.results[0].address_components[0];
+      address = json.results[0].formatted_address;
     })
     .catch((error) => console.warn(error));
 }
@@ -122,6 +131,9 @@ function getAddress() {
 function AddReport({route, navigation}) {
   const [userID, setUserID] = useState(route.params.ID);
   const [description, setDescription] = useState('');
+
+  getLocation();
+  getAddress();
 
   const saveReport = () => {
     if (description == '' || description == ' ') {
@@ -152,22 +164,38 @@ function AddReport({route, navigation}) {
         ],
         {cancelable: false},
       );
-    } else {
+    }/* else if (imgLink == undefined) {
+      Alert.alert(
+        'Need to take a picture of the problem',
+        '',
+        [
+          {
+            text: '',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        {cancelable: false},
+      );
+    } */else {
       // Save note
-      getLocation();
-      getAddress();
-      console.log(geolocation);
-      getAddress();
+      console.log(description);
+      console.log(longitude);
+      console.log(latitude);
+      console.log(imgLink);
       console.log(address);
+      console.log(userID);
+
       /*
       var url = 'http://64.227.36.62/api/newReport';
       var data = {
-        description: description,
+        description: description, // V
         longitude: latitude,
         latitude: longitude,
-        img: imgLink,
+        img: imgLink, // V
         morada: morada,
-        userID: userID,
+        userID: userID, // V
       };
       axios
         .post(url, data)
@@ -218,7 +246,6 @@ function AddReport({route, navigation}) {
               onChangeText={(text) => setDescription(text)}
             />
           </View>
-
           <Image
             source={{uri: photo}}
             style={{
