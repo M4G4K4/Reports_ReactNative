@@ -49,8 +49,8 @@ function Map({route, navigation}) {
         region={{
           latitude: 39.3325,
           longitude: -7.5112,
-          latitudeDelta: 7,
-          longitudeDelta: 7,
+          latitudeDelta: 6,
+          longitudeDelta: 6,
         }}>
         {marker.map((marker) => (
           <Marker
