@@ -6,17 +6,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   View,
+  Image,
 } from 'react-native';
 import MapView, {Marker, Callout} from 'react-native-maps';
+import {Card, CardItem} from 'react-native-elements';
 import axios from 'axios';
 import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-let markersURL = 'https://www.emergency.wa.gov.au/data/incident_FCAD.json';
-
-//TODO: Button to add new report
-// Add report
-// Delete report
-// Edit report
-// Custom view to show the marker OU Style para por mais o menos direito
+import {makeOverlays} from 'react-native-maps/lib/components/Geojson';
 
 // Main function
 function Map({route, navigation}) {
@@ -24,11 +20,11 @@ function Map({route, navigation}) {
   const [call, setCall] = useState(true);
   const [userID, setUserID] = useState(route.params);
 
-  console.log('Map ' + userID.ID);
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.navigate('AddReport',userID)}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AddReport', userID)}>
           <Text>Add</Text>
         </TouchableOpacity>
       ),
@@ -44,10 +40,7 @@ function Map({route, navigation}) {
       .catch((error) => console.error(error));
   };
 
-  if (call) {
-    getMarker();
-    setCall(false);
-  }
+  getMarker();
 
   return (
     <View style={styles.container}>
@@ -66,8 +59,9 @@ function Map({route, navigation}) {
               latitude: marker.longitude,
               longitude: marker.latitude,
             }}>
-            <Callout>
-              <Text style={styles.size}>{marker.description}</Text>
+            <Callout
+              onPress={() => console.log('Marker callout cliked' + marker.ID)}>
+              <Text>{marker.description}</Text>
               <Text>{marker.morada}</Text>
             </Callout>
           </Marker>
@@ -84,9 +78,13 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  size: {
-    fontSize: 20,
+  callout: {
+    width: 200,
+    height: 200,
   },
+  thumb: {},
+  markerDescription: {},
+  markerTitle: {},
 });
 
 export default Map;

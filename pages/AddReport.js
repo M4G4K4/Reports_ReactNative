@@ -26,9 +26,9 @@ console.disableYellowBox = true;
 
 const ClientID = '917669a10ae9a08';
 const ClientSecreat = 'ec6a7a3c715b601811debe8781e54c4f928964b2';
-var base64;
+var base64 = '';
 var photo = '';
-var imgLink;
+var imgLink = '';
 var save = false;
 
 var latitude;
@@ -129,7 +129,7 @@ function getAddress(lat, long) {
 
 // Main Function
 function AddReport({route, navigation}) {
-  const [userID, setUserID] = useState(route.params.ID);
+  const [userID, setUserID] = useState(route.params);
   const [description, setDescription] = useState('');
 
   getLocation();
@@ -164,7 +164,7 @@ function AddReport({route, navigation}) {
         ],
         {cancelable: false},
       );
-    }/* else if (imgLink == undefined) {
+    } else if (imgLink == undefined) {
       Alert.alert(
         'Need to take a picture of the problem',
         '',
@@ -178,7 +178,7 @@ function AddReport({route, navigation}) {
         ],
         {cancelable: false},
       );
-    } */else {
+    } else {
       // Save note
       console.log(description);
       console.log(longitude);
@@ -187,26 +187,37 @@ function AddReport({route, navigation}) {
       console.log(address);
       console.log(userID);
 
-      /*
       var url = 'http://64.227.36.62/api/newReport';
       var data = {
         description: description, // V
         longitude: latitude,
         latitude: longitude,
         img: imgLink, // V
-        morada: morada,
-        userID: userID, // V
+        morada: address,
+        userID: userID.ID, // V
       };
       axios
         .post(url, data)
         .then((res) => {
           console.log('DB report added');
+          Alert.alert(
+            'Report susefully added',
+            '',
+            [
+              {
+                text: '',
+                onPress: () => console.log('Cancel Pressed'),
+              },
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            {cancelable: false},
+          );
+          // navigate to back
+          navigation.navigate('Maps', userID);
         })
         .catch((err) => {
           console.log(err);
         });
-    }
-    */
     }
   };
 
