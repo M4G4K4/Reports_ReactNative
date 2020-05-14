@@ -7,6 +7,7 @@ import {
   StyleSheet,
   View,
   Image,
+  unstable_enableLogBox,
 } from 'react-native';
 import MapView, {Marker, Callout} from 'react-native-maps';
 import {Card, CardItem} from 'react-native-elements';
@@ -30,8 +31,8 @@ function Map({route, navigation}) {
       ),
     });
   });
-
   const getMarker = () => {
+    console.log('---');
     fetch('http://64.227.36.62/api/getAllReports')
       .then((response) => response.json())
       .then((responseJson) => {
@@ -40,7 +41,13 @@ function Map({route, navigation}) {
       .catch((error) => console.error(error));
   };
 
-  getMarker();
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getMarker();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
 
   return (
     <View style={styles.container}>
@@ -61,8 +68,17 @@ function Map({route, navigation}) {
             }}>
             <Callout
               onPress={() => console.log('Marker callout cliked' + marker.ID)}>
-              <Text>{marker.description}</Text>
-              <Text>{marker.morada}</Text>
+              <View>
+                <Text>{marker.description}</Text>
+                <Text>{marker.morada}</Text>
+                <Text>
+                  <Image
+                    style={{height: 100, width: 100}}
+                    source={{uri: marker.img}}
+                    resizeMode="cover"
+                  />
+                </Text>
+              </View>
             </Callout>
           </Marker>
         ))}
