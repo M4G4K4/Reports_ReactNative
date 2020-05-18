@@ -22,6 +22,8 @@ function Map({route, navigation}) {
   const [userID, setUserID] = useState(route.params);
   const [del, setDel] = useState(false);
 
+  console.log(userID);
+
   const handleEditDelete = (marker) => {
     //Edit or Delete marker
     if (marker.userID == userID.ID) {
@@ -41,7 +43,11 @@ function Map({route, navigation}) {
   };
 
   const editReport = (marker) => {
-    navigation.navigate('EditReport', marker);
+    let data = {
+      marker: marker,
+      userID: userID,
+    };
+    navigation.navigate('EditReport', data);
   };
 
   const deleteReport = (marker) => {
