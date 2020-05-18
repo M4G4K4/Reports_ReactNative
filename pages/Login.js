@@ -16,14 +16,28 @@ import {
   StatusBar,
   Button,
   Alert,
+  Dimensions,
 } from 'react-native';
+import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+
+const window = Dimensions.get('window');
+const screen = Dimensions.get('screen');
 
 function Login({navigation}) {
+  const [dimensions, setDimensions] = useState({window, screen});
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [hash, setHash] = useState('');
+
+  const change = ({window, screen}) => {
+    var w = Dimensions.get('window');
+    var s = Dimensions.get('screen');
+    setDimensions({window, screen});
+  };
+
+  Dimensions.addEventListener('change', change);
 
   function encryptPasswrod(password) {
     sha256(password).then((hash) => {
@@ -59,8 +73,18 @@ function Login({navigation}) {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.background}>
-      <View style={styles.containerLogo}>
+    <KeyboardAvoidingView
+      style={
+        dimensions.window.height > dimensions.window.width
+          ? styles.fullP
+          : styles.fullL
+      }>
+      <View
+        style={
+          dimensions.window.height > dimensions.window.width
+            ? styles.containerLogoP
+            : styles.containerLogoL
+        }>
         <Image source={require('../src/images/pointBRemoved.png')} />
       </View>
       <View style={styles.container}>
@@ -89,9 +113,9 @@ function Login({navigation}) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.btnRegister}
+          style={styles.btnNotes}
           onPress={() => navigation.navigate('Notes')}>
-          <Text style={styles.textRegister}>Notes</Text>
+          <Text style={styles.textNotes}>Notes</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -99,15 +123,34 @@ function Login({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  fullP: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  fullL: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   background: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  containerLogo: {
+  containerLogoP: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
     aspectRatio: 0.75,
+    paddingLeft: 170,
+    width: '20%',
+    height: '20%',
+  },
+  containerLogoL: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    aspectRatio: 0.75,
+    paddingBottom: 150,
     width: '20%',
     height: '20%',
   },
@@ -115,8 +158,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '90%',
-    paddingBottom: 50,
   },
   input: {
     backgroundColor: '#FFF',
@@ -147,8 +188,22 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     marginTop: 10,
   },
+  btnNotes: {
+    width: '90%',
+    height: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 7,
+    marginTop: 20,
+    color: '#000000',
+  },
   textRegister: {
     color: '#FFF',
+    fontSize: 18,
+    marginTop: 10,
+  },
+  textNotes: {
+    color: '#000',
     fontSize: 18,
     marginTop: 10,
   },
