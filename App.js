@@ -31,6 +31,7 @@ import AddNote from './pages/AddNote';
 import EditNote from './pages/EditNote';
 import AddReport from './pages/AddReport';
 import TakeImage from './pages/TakeImage';
+import EditReport from './pages/EditReport';
 
 const Stack = createStackNavigator();
 
@@ -55,6 +56,7 @@ const App: () => React$Node = () => {
         <Stack.Screen name="EditNote" component={EditNote} />
         <Stack.Screen name="AddReport" component={AddReport} />
         <Stack.Screen name="TakeImage" component={TakeImage} />
+        <Stack.Screen name="EditReport" component={EditReport} />
       </Stack.Navigator>
     </NavigationContainer>
   );

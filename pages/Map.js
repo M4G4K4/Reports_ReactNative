@@ -20,6 +20,50 @@ function Map({route, navigation}) {
   const [marker, setMarker] = useState([]);
   const [call, setCall] = useState(true);
   const [userID, setUserID] = useState(route.params);
+  const [del, setDel] = useState(false);
+
+  const handleEditDelete = (marker) => {
+    //Edit or Delete marker
+    if (marker.userID == userID.ID) {
+      Alert.alert(
+        'Please choose:',
+        null,
+        [
+          {text: 'Edit', onPress: () => editReport(marker)},
+          {text: 'Delete', onPress: () => deleteReport(marker)},
+        ],
+        {cancelable: true},
+        //clicking out side of alert will not cancel
+      );
+    } else {
+      console.log('Wrong user cant edit delete');
+    }
+  };
+
+  const editReport = (marker) => {
+    navigation.navigate('EditReport', marker);
+  };
+
+  const deleteReport = (marker) => {
+    let data = {
+      img: marker.img,
+    };
+    axios
+      .post('http://64.227.36.62/api/deleteReport', data)
+      .then((response) => {
+        if (response.status == 200) {
+          console.log('Return sucesso');
+          setDel(true);
+          getMarker();
+          navigation.navigate('Maps');
+        } else {
+          console.log('Erro');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -32,7 +76,6 @@ function Map({route, navigation}) {
     });
   });
   const getMarker = () => {
-    console.log('---');
     fetch('http://64.227.36.62/api/getAllReports')
       .then((response) => response.json())
       .then((responseJson) => {
@@ -48,10 +91,10 @@ function Map({route, navigation}) {
     return unsubscribe;
   }, [navigation]);
 
-
   return (
     <View style={styles.container}>
       <MapView
+        extraData={del}
         style={styles.map}
         region={{
           latitude: 39.3325,
@@ -61,17 +104,18 @@ function Map({route, navigation}) {
         }}>
         {marker.map((marker) => (
           <Marker
+            extraData={del}
+            pinColor={marker.userID === userID ? '#f50511' : '#005eff'}
             key={marker.ID}
             coordinate={{
               latitude: marker.longitude,
               longitude: marker.latitude,
             }}>
-            <Callout
-              onPress={() => console.log('Marker callout cliked' + marker.ID)}>
+            <Callout onPress={() => handleEditDelete(marker)}>
               <View>
-                <Text>{marker.description}</Text>
+                <Text style={{float: 'right'}}>{marker.description}</Text>
                 <Text>{marker.morada}</Text>
-                <Text>
+                <Text style={{float: 'left'}}>
                   <Image
                     style={{height: 100, width: 100}}
                     source={{uri: marker.img}}
