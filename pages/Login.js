@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component, useState, useEffect,useContext} from 'react';
 import axios from 'axios';
 import {sha256} from 'react-native-sha256';
 import {
@@ -20,8 +20,6 @@ import {
 } from 'react-native';
 import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import {LocalizationContext} from '../services/localization/LocalizationContext';
-import translations from '../services/localization/translations';
-
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -33,6 +31,7 @@ function Login({navigation}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [hash, setHash] = useState('');
+  const {translations} = useContext(LocalizationContext);
 
   const change = ({window, screen}) => {
     var w = Dimensions.get('window');
@@ -93,14 +92,14 @@ function Login({navigation}) {
       <View style={styles.container}>
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder={translations.Email}
           autoCorrect={false}
           onChangeText={(text) => setUsername(text)}
         />
 
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder={translations.Password}
           autoCorrect={false}
           onChangeText={(text) => encryptPasswrod(text)}
         />
@@ -112,13 +111,13 @@ function Login({navigation}) {
         <TouchableOpacity
           style={styles.btnRegister}
           onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.textRegister}>Register</Text>
+          <Text style={styles.textRegister}>{translations.Register}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.btnNotes}
           onPress={() => navigation.navigate('Notes')}>
-          <Text style={styles.textNotes}>Notes</Text>
+          <Text style={styles.textNotes}>{translations.Notes}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

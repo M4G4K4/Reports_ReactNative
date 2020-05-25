@@ -5,13 +5,21 @@ const translations = {
   en: {
     WELCOME: 'Welcome to Localization',
     BUTTON: 'b en',
-    Login: 'en',
+    Login: 'Login',
+    Email: 'Email',
+    Password: 'Password',
+    Register: 'Register',
+    Notes: 'Notes',
   },
   pt: {
     WELCOME: 'Bem-vindo à multi-lingua',
     BUTTON: 'b pt',
-    Login: 'pt',
-  },
+    Login: 'Login',
+    Email: 'Email',
+    Password: 'Palavra Passe',
+    Register: 'Registo',
+    Notes: 'Notas',
+  }
 };
 
 export default new LocalizedStrings(translations);
