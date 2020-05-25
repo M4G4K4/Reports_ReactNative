@@ -111,7 +111,7 @@ function Map({route, navigation}) {
         {marker.map((marker) => (
           <Marker
             extraData={del}
-            pinColor={marker.userID === userID ? '#f50511' : '#005eff'}
+            pinColor={marker.userID == userID ? '#005eff' : '#f50511'}
             key={marker.ID}
             coordinate={{
               latitude: marker.longitude,

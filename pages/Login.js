@@ -19,6 +19,9 @@ import {
   Dimensions,
 } from 'react-native';
 import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import {LocalizationContext} from '../services/localization/LocalizationContext';
+import translations from '../services/localization/translations';
+
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -103,7 +106,7 @@ function Login({navigation}) {
         />
 
         <TouchableOpacity style={styles.btnLogin} onPress={login}>
-          <Text style={styles.textLogin}>Login</Text>
+          <Text style={styles.textLogin}>{translations.Login}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
