@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useContext, useState} from 'react';
 const Realm = require('realm');
 import {ListItem} from 'react-native-elements';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -20,6 +20,7 @@ import {
 } from 'react-native';
 
 import Notes from './Notes';
+import {LocalizationContext} from '../services/localization/LocalizationContext';
 
 const editNote = (title, description, navigation, id) => {
   var dia = new Date().getDate();
@@ -71,13 +72,14 @@ function EditNote({route, navigation}) {
   const [title, setTitle] = useState(route.params.title);
   const [id, setID] = useState(route.params.id);
   const [date, setDate] = useState(route.params.createDate);
+  const {translations} = useContext(LocalizationContext);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
           onPress={() => editNote(title, description, navigation, id)}>
-          <Text>Save</Text>
+          <Text>{translations.Save}</Text>
         </TouchableOpacity>
       ),
     });
@@ -86,7 +88,7 @@ function EditNote({route, navigation}) {
   return (
     <View>
       <TextInput
-        placeholder="Title"
+        placeholder={translations.Title}
         autoCorrect={true}
         value={title}
         onChangeText={(text) => setTitle(text)}
@@ -94,7 +96,7 @@ function EditNote({route, navigation}) {
 
       <TextInput
         multiline={true}
-        placeholder="Title"
+        placeholder={translations.Description}
         numberOfLines={10}
         value={description}
         onChangeText={(text) => setDescription(text)}

@@ -1,10 +1,8 @@
-import React, {Component, useState} from 'react';
+import React, { useContext, useState} from 'react';
 const Realm = require('realm');
-import {ListItem} from 'react-native-elements';
 import {createStackNavigator} from '@react-navigation/stack';
 const Stack = createStackNavigator();
 import {
-  SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
@@ -18,6 +16,7 @@ import {
   Alert,
 } from 'react-native';
 import Notes from './Notes';
+import {LocalizationContext} from '../services/localization/LocalizationContext';
 
 const saveNote = (title, description, navigation) => {
   var dia = new Date().getDate();
@@ -65,12 +64,14 @@ const saveNote = (title, description, navigation) => {
 };
 
 function AddNote({navigation}) {
+  const {translations} = useContext(LocalizationContext);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
           onPress={() => saveNote(title, description, navigation)}>
-          <Text>Save</Text>
+          <Text>{translations.Save}</Text>
         </TouchableOpacity>
       ),
     });
@@ -82,14 +83,14 @@ function AddNote({navigation}) {
   return (
     <View>
       <TextInput
-        placeholder="Title"
+        placeholder={translations.Title}
         autoCorrect={true}
         onChangeText={(text) => setTitle(text)}
       />
 
       <TextInput
         multiline={true}
-        placeholder="Title"
+        placeholder={translations.Description}
         numberOfLines={10}
         onChangeText={(text) => setDescription(text)}
       />

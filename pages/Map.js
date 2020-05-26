@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useContext, useState} from 'react';
 import {
   Alert,
   FlatList,
@@ -14,6 +14,7 @@ import {Card, CardItem} from 'react-native-elements';
 import axios from 'axios';
 import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import {makeOverlays} from 'react-native-maps/lib/components/Geojson';
+import {LocalizationContext} from '../services/localization/LocalizationContext';
 
 // Main function
 function Map({route, navigation}) {
@@ -21,18 +22,18 @@ function Map({route, navigation}) {
   const [call, setCall] = useState(true);
   const [userID, setUserID] = useState(route.params);
   const [del, setDel] = useState(false);
+  const {translations} = useContext(LocalizationContext);
 
-  console.log(userID);
 
   const handleEditDelete = (marker) => {
     //Edit or Delete marker
     if (marker.userID == userID.ID) {
       Alert.alert(
-        'Please choose:',
+        `${translations.MapsAlertTitle}`,
         null,
         [
-          {text: 'Edit', onPress: () => editReport(marker)},
-          {text: 'Delete', onPress: () => deleteReport(marker)},
+          {text: `${translations.MapsAlertEditbtn}`, onPress: () => editReport(marker)},
+          {text: `${translations.MapsAlertDeletebtn}`, onPress: () => deleteReport(marker)},
         ],
         {cancelable: true},
         //clicking out side of alert will not cancel
@@ -76,11 +77,12 @@ function Map({route, navigation}) {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => navigation.navigate('AddReport', userID)}>
-          <Text>Add</Text>
+          <Text>{translations.Add}</Text>
         </TouchableOpacity>
       ),
     });
   });
+
   const getMarker = () => {
     fetch('http://64.227.36.62/api/getAllReports')
       .then((response) => response.json())
@@ -111,7 +113,7 @@ function Map({route, navigation}) {
         {marker.map((marker) => (
           <Marker
             extraData={del}
-            pinColor={marker.userID == userID ? '#005eff' : '#f50511'}
+            pinColor={marker.userID == userID ? 'red' : 'red'}
             key={marker.ID}
             coordinate={{
               latitude: marker.longitude,

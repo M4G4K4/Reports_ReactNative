@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useContext, useState} from 'react';
 import {sha256} from 'react-native-sha256';
 import axios from 'axios';
 import {
@@ -15,7 +15,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-
+import {LocalizationContext} from '../services/localization/LocalizationContext';
 
 function Register({navigation}) {
   const [isLoading, setLoading] = useState(true);
@@ -24,22 +24,7 @@ function Register({navigation}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [hash, setHash] = useState('');
-
-  function alert() {
-    Alert.alert(
-      'Alert Title',
-      'My Alert Msg',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ],
-      {cancelable: false},
-    );
-  }
+  const {translations} = useContext(LocalizationContext);
 
   function encryptPasswrod(password) {
     sha256(password).then((hash) => {
@@ -57,9 +42,8 @@ function Register({navigation}) {
       .post('http://64.227.36.62/api/registerUser', data)
       .then((response) => {
         if (response.status == 201) {
-          console.log('Sign up sucess');
           Alert.alert(
-            'New user created',
+            `${translations.RegisterAlertTitle}`,
             '',
             [{text: 'OK', onPress: () => navigation.navigate('Login')}],
             {cancelable: false},
@@ -77,27 +61,27 @@ function Register({navigation}) {
       <View style={styles.container}>
         <TextInput
           style={styles.input}
-          placeholder="Name"
+          placeholder={translations.RegisterName}
           autoCorrect={false}
           onChangeText={(text) => setName(text)}
         />
 
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder={translations.RegisterEmail}
           autoCorrect={false}
           onChangeText={(text) => setUsername(text)}
         />
 
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder={translations.Password}
           autoCorrect={false}
           onChangeText={(text) => encryptPasswrod(text)}
         />
 
         <TouchableOpacity style={styles.btnRegister} onPress={regist}>
-          <Text style={styles.textRegister}>Sign Up</Text>
+          <Text style={styles.textRegister}>{translations.RegisterSignUpBtn}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

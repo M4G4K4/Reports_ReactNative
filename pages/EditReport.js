@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useContext, useState} from 'react';
 import {ListItem} from 'react-native-elements';
 import Geolocation from '@react-native-community/geolocation';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -22,6 +22,7 @@ import {
   FlatList,
 } from 'react-native';
 import {add} from 'react-native-reanimated';
+import {LocalizationContext} from '../services/localization/LocalizationContext';
 console.disableYellowBox = true;
 
 const ClientID = '917669a10ae9a08';
@@ -34,6 +35,7 @@ function AddReport({route, navigation}) {
   const [userID, setUserID] = useState(route.params.userID);
   const [marker, setMarker] = useState(route.params.marker);
   const [description, setDescription] = useState('');
+  const {translations} = useContext(LocalizationContext);
 
   console.log(userID);
   console.log(marker.img);
@@ -78,7 +80,7 @@ function AddReport({route, navigation}) {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPress={() => saveReport()}>
-          <Text>Save</Text>
+          <Text>{translations.Save}</Text>
         </TouchableOpacity>
       ),
     });
@@ -91,7 +93,7 @@ function AddReport({route, navigation}) {
           <View>
             <TextInput
               style={styles.input}
-              placeholder="Report Description"
+              placeholder={translations.EditReportDescription}
               autoCorrect={true}
               onChangeText={(text) => setDescription(text)}
             />

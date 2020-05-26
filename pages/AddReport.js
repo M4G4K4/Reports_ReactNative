@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useContext, useState} from 'react';
 import {ListItem} from 'react-native-elements';
 import Geolocation from '@react-native-community/geolocation';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -22,6 +22,8 @@ import {
   FlatList,
 } from 'react-native';
 import {add} from 'react-native-reanimated';
+import {LocalizationContext} from '../services/localization/LocalizationContext';
+
 console.disableYellowBox = true;
 
 const ClientID = '917669a10ae9a08';
@@ -107,7 +109,6 @@ function uploadPhoto(base64) {
     });
 }
 
-// ----------------------------------
 function getLocation() {
   Geolocation.getCurrentPosition((info) => {
     latitude = parseFloat(info.coords.latitude);
@@ -131,6 +132,7 @@ function getAddress(lat, long) {
 function AddReport({route, navigation}) {
   const [userID, setUserID] = useState(route.params);
   const [description, setDescription] = useState('');
+  const {translations} = useContext(LocalizationContext);
 
   getLocation();
   getAddress();
@@ -138,7 +140,7 @@ function AddReport({route, navigation}) {
   const saveReport = () => {
     if (description == '' || description == ' ') {
       Alert.alert(
-        'Description field need to be filled',
+        `${translations.AddReportSaveReportAlertDescriptionTitle}`,
         '',
         [
           {
@@ -152,7 +154,7 @@ function AddReport({route, navigation}) {
       );
     } else if (base64 == '' || base64 == ' ') {
       Alert.alert(
-        'Need to take a picture of the problem',
+        `${translations.AddReportSaveReportAlertImageTitle}`,
         '',
         [
           {
@@ -166,7 +168,7 @@ function AddReport({route, navigation}) {
       );
     } else if (imgLink == undefined) {
       Alert.alert(
-        'Need to take a picture of the problem',
+        `${translations.AddReportSaveReportAlertImageTitle}`,
         '',
         [
           {
@@ -180,12 +182,6 @@ function AddReport({route, navigation}) {
       );
     } else {
       // Save note
-      console.log(description);
-      console.log(longitude);
-      console.log(latitude);
-      console.log(imgLink);
-      console.log(address);
-      console.log(userID);
 
       var url = 'http://64.227.36.62/api/newReport';
       var data = {
@@ -201,7 +197,7 @@ function AddReport({route, navigation}) {
         .then((res) => {
           console.log('DB report added');
           Alert.alert(
-            'Report susefully added',
+              `${translations.AddReportSaveReportAlertSucessTitle}`,
             '',
             [
               {
@@ -226,7 +222,7 @@ function AddReport({route, navigation}) {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPress={saveReport}>
-          <Text>Save</Text>
+          <Text>{translations.Save}</Text>
         </TouchableOpacity>
       ),
     });
@@ -246,13 +242,13 @@ function AddReport({route, navigation}) {
                 fontSize: 15,
                 fontWeight: 'bold',
               }}>
-              ADD PHOTO
+              {translations.AddReportAddPhoto}
             </Text>
           </TouchableOpacity>
           <View>
             <TextInput
               style={styles.input}
-              placeholder="Report Description"
+              placeholder={translations.AddReportReportDescription}
               autoCorrect={true}
               onChangeText={(text) => setDescription(text)}
             />

@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useContext, useState} from 'react';
 const Realm = require('realm');
 import {ListView} from 'realm/react-native';
 import Swipeable from 'react-native-swipeable-row';
@@ -24,12 +24,15 @@ import {
   FlatList,
   TouchableWithoutFeedback,
 } from 'react-native';
+import {LocalizationContext} from '../services/localization/LocalizationContext';
+
 
 var editRefresh = false;
 
 // Main function
 function Notes({route, navigation}) {
   const [refresh, setRefresh] = useState(true);
+  const {translations} = useContext(LocalizationContext);
   // Refresh list after edit
   editRefresh = route.params;
 
@@ -52,7 +55,7 @@ function Notes({route, navigation}) {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPress={() => navigation.navigate('AddNote')}>
-          <Text>Add</Text>
+          <Text>{translations.Add}</Text>
         </TouchableOpacity>
       ),
     });
@@ -66,15 +69,15 @@ function Notes({route, navigation}) {
 
   const ActionOnNote = (item) => {
     Alert.alert(
-      'Actions on a note',
+      `${translations.AlertNotesTitle}`,
       '',
       [
         {
-          text: 'Cancel',
+          text: `${translations.AlertNotesCancelbtn}`,
           style: 'cancel',
         },
-        {text: 'Delete', onPress: () => deleteNote(item)},
-        {text: 'Edit', onPress: () => editNote(item)},
+        {text: `${translations.AlertNotesDeletebtn}`, onPress: () => deleteNote(item)},
+        {text: `${translations.AlertNotesEditbtn}`, onPress: () => editNote(item)},
       ],
       {cancelable: false},
     );
