@@ -1,24 +1,17 @@
-import React, {Component, useState, useEffect, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import axios from 'axios';
 import {sha256} from 'react-native-sha256';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   KeyboardAvoidingView,
   Image,
   TextInput,
   TouchableOpacity,
   Text,
-  FlatList,
-  ActivityIndicator,
-  StatusBar,
-  Button,
   Alert,
   Dimensions,
 } from 'react-native';
-import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import {LocalizationContext} from '../services/localization/LocalizationContext';
 
 const window = Dimensions.get('window');
@@ -26,10 +19,7 @@ const screen = Dimensions.get('screen');
 
 function Login({navigation}) {
   const [dimensions, setDimensions] = useState({window, screen});
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [hash, setHash] = useState('');
   const {translations} = useContext(LocalizationContext);
 
@@ -51,7 +41,7 @@ function Login({navigation}) {
     axios
       .get('http://64.227.36.62/api/checkUser2/' + username + '/' + hash)
       .then((response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           console.log('Return sucesso');
           console.log(response.data.ID);
           let data = {

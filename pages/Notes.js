@@ -1,31 +1,15 @@
-import React, {Component, useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 const Realm = require('realm');
-import {ListView} from 'realm/react-native';
-import Swipeable from 'react-native-swipeable-row';
-import {List, ListItem} from 'react-native-elements';
-import {Icon, ThemeProvider} from 'react-native-elements';
-import {FaBeer} from 'react-icons/fa';
-import {MdSave} from 'react-icons/md';
-import {createStackNavigator} from '@react-navigation/stack';
-const Stack = createStackNavigator();
+
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
-  KeyboardAvoidingView,
-  Image,
-  TextInput,
   TouchableOpacity,
   Alert,
   FlatList,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import {LocalizationContext} from '../services/localization/LocalizationContext';
-
 
 var editRefresh = false;
 
@@ -62,9 +46,7 @@ function Notes({route, navigation}) {
   });
 
   const ListViewItemSeparator = () => {
-    return (
-      <View style={{height: 0.5, width: '100%', backgroundColor: '#000'}} />
-    );
+    return <View style={styles.ListViewSeparator} />;
   };
 
   const ActionOnNote = (item) => {
@@ -76,8 +58,14 @@ function Notes({route, navigation}) {
           text: `${translations.AlertNotesCancelbtn}`,
           style: 'cancel',
         },
-        {text: `${translations.AlertNotesDeletebtn}`, onPress: () => deleteNote(item)},
-        {text: `${translations.AlertNotesEditbtn}`, onPress: () => editNote(item)},
+        {
+          text: `${translations.AlertNotesDeletebtn}`,
+          onPress: () => deleteNote(item),
+        },
+        {
+          text: `${translations.AlertNotesEditbtn}`,
+          onPress: () => editNote(item),
+        },
       ],
       {cancelable: false},
     );
@@ -123,6 +111,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: 'center',
     justifyContent: 'center',
+  },
+  ListViewSeparator: {
+    height: 0.5,
+    width: '100%',
+    backgroundColor: '#000',
   },
   MainContainer: {
     flex: 1,

@@ -1,33 +1,22 @@
-import React, {Component, useContext, useState} from 'react';
-import {ListItem} from 'react-native-elements';
+import React, {useContext, useState} from 'react';
 import Geolocation from '@react-native-community/geolocation';
-import {createStackNavigator} from '@react-navigation/stack';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
-const Stack = createStackNavigator();
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
-  KeyboardAvoidingView,
   Image,
   TextInput,
   TouchableOpacity,
   Alert,
-  FlatList,
 } from 'react-native';
-import {add} from 'react-native-reanimated';
 import {LocalizationContext} from '../services/localization/LocalizationContext';
 
 console.disableYellowBox = true;
 
 const ClientID = '917669a10ae9a08';
-const ClientSecreat = 'ec6a7a3c715b601811debe8781e54c4f928964b2';
 var base64 = '';
 var photo = '';
 var imgLink = '';
@@ -48,7 +37,6 @@ function addPhoto() {
       {text: 'Gallery', onPress: () => openGalery()},
     ],
     {cancelable: true},
-    //clicking out side of alert will not cancel
   );
 }
 
@@ -62,10 +50,6 @@ function openCamera() {
   }).then((image) => {
     photo = image.path;
     base64 = image.data;
-    console.log('Base64: ' + base64);
-    console.log('Path: ' + image.path);
-    console.log('Photo: ' + photo);
-    console.log('Size: ' + image.size);
     save = true;
     uploadPhoto(image.data);
   });
@@ -138,7 +122,7 @@ function AddReport({route, navigation}) {
   getAddress();
 
   const saveReport = () => {
-    if (description == '' || description == ' ') {
+    if (description === '' || description === ' ') {
       Alert.alert(
         `${translations.AddReportSaveReportAlertDescriptionTitle}`,
         '',
@@ -152,7 +136,7 @@ function AddReport({route, navigation}) {
         ],
         {cancelable: false},
       );
-    } else if (base64 == '' || base64 == ' ') {
+    } else if (base64 === '' || base64 === ' ') {
       Alert.alert(
         `${translations.AddReportSaveReportAlertImageTitle}`,
         '',
@@ -166,7 +150,7 @@ function AddReport({route, navigation}) {
         ],
         {cancelable: false},
       );
-    } else if (imgLink == undefined) {
+    } else if (imgLink === undefined || imgLink === ' ' || imgLink === '') {
       Alert.alert(
         `${translations.AddReportSaveReportAlertImageTitle}`,
         '',
@@ -185,19 +169,19 @@ function AddReport({route, navigation}) {
 
       var url = 'http://64.227.36.62/api/newReport';
       var data = {
-        description: description, // V
+        description: description,
         longitude: latitude,
         latitude: longitude,
-        img: imgLink, // V
+        img: imgLink,
         morada: address,
-        userID: userID.ID, // V
+        userID: userID.ID,
       };
       axios
         .post(url, data)
         .then((res) => {
           console.log('DB report added');
           Alert.alert(
-              `${translations.AddReportSaveReportAlertSucessTitle}`,
+            `${translations.AddReportSaveReportAlertSucessTitle}`,
             '',
             [
               {

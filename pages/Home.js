@@ -1,18 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  Button,
-} from 'react-native';
+import {View, Text, Button} from 'react-native';
 
 function Home({navigation}) {
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View>
       <Text>Home Screen</Text>
       <Button
         title="Go to Register Screen"

@@ -1,22 +1,11 @@
-import React, {Component, useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 const Realm = require('realm');
-import {ListItem} from 'react-native-elements';
-import ImagePicker from 'react-native-image-crop-picker';
-import {createStackNavigator} from '@react-navigation/stack';
-const Stack = createStackNavigator();
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
-  KeyboardAvoidingView,
-  Image,
   TextInput,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 
 import Notes from './Notes';

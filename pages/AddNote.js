@@ -1,19 +1,11 @@
-import React, { useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 const Realm = require('realm');
-import {createStackNavigator} from '@react-navigation/stack';
-const Stack = createStackNavigator();
 import {
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
-  KeyboardAvoidingView,
-  Image,
   TextInput,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import Notes from './Notes';
 import {LocalizationContext} from '../services/localization/LocalizationContext';

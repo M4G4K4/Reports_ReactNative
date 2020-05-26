@@ -1,29 +1,22 @@
-import React, {Component, useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Alert,
-  FlatList,
   Text,
   TouchableOpacity,
   StyleSheet,
   View,
   Image,
-  unstable_enableLogBox,
 } from 'react-native';
 import MapView, {Marker, Callout} from 'react-native-maps';
-import {Card, CardItem} from 'react-native-elements';
 import axios from 'axios';
-import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-import {makeOverlays} from 'react-native-maps/lib/components/Geojson';
 import {LocalizationContext} from '../services/localization/LocalizationContext';
 
 // Main function
 function Map({route, navigation}) {
   const [marker, setMarker] = useState([]);
-  const [call, setCall] = useState(true);
   const [userID, setUserID] = useState(route.params);
   const [del, setDel] = useState(false);
   const {translations} = useContext(LocalizationContext);
-
 
   const handleEditDelete = (marker) => {
     //Edit or Delete marker
@@ -32,8 +25,14 @@ function Map({route, navigation}) {
         `${translations.MapsAlertTitle}`,
         null,
         [
-          {text: `${translations.MapsAlertEditbtn}`, onPress: () => editReport(marker)},
-          {text: `${translations.MapsAlertDeletebtn}`, onPress: () => deleteReport(marker)},
+          {
+            text: `${translations.MapsAlertEditbtn}`,
+            onPress: () => editReport(marker),
+          },
+          {
+            text: `${translations.MapsAlertDeletebtn}`,
+            onPress: () => deleteReport(marker),
+          },
         ],
         {cancelable: true},
         //clicking out side of alert will not cancel

@@ -1,14 +1,10 @@
-import React, {Component, useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {sha256} from 'react-native-sha256';
 import axios from 'axios';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
   KeyboardAvoidingView,
   Image,
   TextInput,
@@ -18,11 +14,8 @@ import {
 import {LocalizationContext} from '../services/localization/LocalizationContext';
 
 function Register({navigation}) {
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [hash, setHash] = useState('');
   const {translations} = useContext(LocalizationContext);
 
@@ -41,7 +34,7 @@ function Register({navigation}) {
     axios
       .post('http://64.227.36.62/api/registerUser', data)
       .then((response) => {
-        if (response.status == 201) {
+        if (response.status === 201) {
           Alert.alert(
             `${translations.RegisterAlertTitle}`,
             '',
@@ -81,7 +74,9 @@ function Register({navigation}) {
         />
 
         <TouchableOpacity style={styles.btnRegister} onPress={regist}>
-          <Text style={styles.textRegister}>{translations.RegisterSignUpBtn}</Text>
+          <Text style={styles.textRegister}>
+            {translations.RegisterSignUpBtn}
+          </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

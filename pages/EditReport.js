@@ -1,32 +1,16 @@
-import React, {Component, useContext, useState} from 'react';
-import {ListItem} from 'react-native-elements';
-import Geolocation from '@react-native-community/geolocation';
-import {createStackNavigator} from '@react-navigation/stack';
-import ImagePicker from 'react-native-image-crop-picker';
+import React, {useContext, useState} from 'react';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
-const Stack = createStackNavigator();
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
-  KeyboardAvoidingView,
-  Image,
   TextInput,
   TouchableOpacity,
   Alert,
-  FlatList,
 } from 'react-native';
-import {add} from 'react-native-reanimated';
 import {LocalizationContext} from '../services/localization/LocalizationContext';
 console.disableYellowBox = true;
-
-const ClientID = '917669a10ae9a08';
-const ClientSecreat = 'ec6a7a3c715b601811debe8781e54c4f928964b2';
 
 Geocoder.init('AIzaSyBPsA7_4kLm_VZefQZ20ESObvg5m8LHss0', {language: 'pt-BR'});
 
@@ -41,7 +25,7 @@ function AddReport({route, navigation}) {
   console.log(marker.img);
 
   const saveReport = () => {
-    if (description != ' ' || description != '') {
+    if (description !== ' ' || description !== '') {
       let data = {
         description: description,
         img: marker.img,
@@ -49,7 +33,7 @@ function AddReport({route, navigation}) {
       axios
         .put('http://64.227.36.62/api/editReport', data)
         .then((response) => {
-          if (response.status == 200) {
+          if (response.status === 200) {
             console.log('Return sucesso');
             navigation.navigate('Maps');
           } else {
