@@ -39,7 +39,7 @@ function Notes({route, navigation}) {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPress={() => navigation.navigate('AddNote')}>
-          <Text>{translations.Add}</Text>
+          <Text style={styles.AddBtn}>{translations.Add}</Text>
         </TouchableOpacity>
       ),
     });
@@ -107,6 +107,11 @@ function Notes({route, navigation}) {
 }
 
 const styles = StyleSheet.create({
+  AddBtn: {
+    paddingRight: 20,
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
   background: {
     flex: 1,
     alignContent: 'center',

@@ -68,7 +68,7 @@ function EditNote({route, navigation}) {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => editNote(title, description, navigation, id)}>
-          <Text>{translations.Save}</Text>
+          <Text style={styles.SaveBtn} >{translations.Save}</Text>
         </TouchableOpacity>
       ),
     });
@@ -77,6 +77,7 @@ function EditNote({route, navigation}) {
   return (
     <View>
       <TextInput
+        style={styles.input}
         placeholder={translations.Title}
         autoCorrect={true}
         value={title}
@@ -84,6 +85,8 @@ function EditNote({route, navigation}) {
       />
 
       <TextInput
+        style={styles.input}
+        textAlignVertical={'top'}
         multiline={true}
         placeholder={translations.Description}
         numberOfLines={10}
@@ -99,6 +102,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: 'center',
     justifyContent: 'center',
+  },
+  SaveBtn: {
+    paddingRight: 20,
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  input: {
+    marginTop: 15,
+    marginLeft: 15,
+    backgroundColor: '#FFF',
+    width: '90%',
+    marginBottom: 15,
+    color: '#222',
+    fontSize: 17,
+    borderRadius: 7,
   },
 });
 

@@ -206,7 +206,7 @@ function AddReport({route, navigation}) {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPress={saveReport}>
-          <Text>{translations.Save}</Text>
+          <Text  style={styles.SaveBtn}>{translations.Save}</Text>
         </TouchableOpacity>
       ),
     });
@@ -220,12 +220,7 @@ function AddReport({route, navigation}) {
             onPress={() => {
               addPhoto();
             }}>
-            <Text
-              style={{
-                color: '#0B4F6C',
-                fontSize: 15,
-                fontWeight: 'bold',
-              }}>
+            <Text style={styles.AddPhoto}>
               {translations.AddReportAddPhoto}
             </Text>
           </TouchableOpacity>
@@ -237,17 +232,7 @@ function AddReport({route, navigation}) {
               onChangeText={(text) => setDescription(text)}
             />
           </View>
-          <Image
-            source={{uri: photo}}
-            style={{
-              resizeMode: 'stretch',
-              width: 100,
-              height: 100,
-              marginRight: 15,
-              borderBottomLeftRadius: 20,
-              borderTopLeftRadius: 20,
-            }}
-          />
+          <Image source={{uri: photo}} style={styles.image} />
         </View>
       </View>
     </View>
@@ -258,13 +243,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  image: {
+    marginLeft: 50,
+    width: 300,
+    height: 300,
+    marginRight: 15,
+  },
   input: {
     backgroundColor: '#FFF',
     width: '90%',
     marginBottom: 15,
     color: '#222',
     fontSize: 17,
+    marginLeft: 20,
     borderRadius: 7,
+  },
+  SaveBtn: {
+    paddingRight: 20,
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  AddPhoto: {
+    backgroundColor: '#1898cf',
+    height: 45,
+    marginTop: 20,
+    marginBottom: 20,
+    borderRadius: 7,
+    marginLeft: 150,
+    marginRight: 150,
+    paddingLeft: 15,
+    paddingTop: 10,
+    fontSize: 15,
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 

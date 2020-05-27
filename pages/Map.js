@@ -6,17 +6,43 @@ import {
   StyleSheet,
   View,
   Image,
+  DeviceEventEmitter,
 } from 'react-native';
 import MapView, {Marker, Callout} from 'react-native-maps';
 import axios from 'axios';
 import {LocalizationContext} from '../services/localization/LocalizationContext';
+import {
+  accelerometer,
+  gyroscope,
+  barometer,
+  setUpdateIntervalForType,
+  SensorTypes,
+} from 'react-native-sensors';
+import {map, filter} from 'rxjs/operators';
+
+var mapStyleJSON = require('../JSON/mapStyle.json');
+var mapStyle2JSON = require('../JSON/mapStyle2.json');
+
+setUpdateIntervalForType(SensorTypes.barometer, 500); // defaults to 100ms
 
 // Main function
 function Map({route, navigation}) {
   const [marker, setMarker] = useState([]);
   const [userID, setUserID] = useState(route.params);
   const [del, setDel] = useState(false);
+  const [mapStyle, setMapStyle] = useState(0);
   const {translations} = useContext(LocalizationContext);
+
+  const subscription = barometer.subscribe(({pressure}) => {
+    console.log(pressure);
+    if (pressure >= 550) {
+      // night
+      setMapStyle(1);
+    } else {
+      // day
+      setMapStyle(2);
+    }
+  });
 
   const handleEditDelete = (marker) => {
     //Edit or Delete marker
@@ -76,7 +102,7 @@ function Map({route, navigation}) {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => navigation.navigate('AddReport', userID)}>
-          <Text>{translations.Add}</Text>
+          <Text style={styles.SaveBtn}>{translations.Add}</Text>
         </TouchableOpacity>
       ),
     });
@@ -103,6 +129,7 @@ function Map({route, navigation}) {
       <MapView
         extraData={del}
         style={styles.map}
+        customMapStyle={mapStyle == 1 ? mapStyleJSON : mapStyle2JSON}
         region={{
           latitude: 39.3325,
           longitude: -7.5112,
@@ -120,9 +147,9 @@ function Map({route, navigation}) {
             }}>
             <Callout onPress={() => handleEditDelete(marker)}>
               <View>
-                <Text style={{float: 'right'}}>{marker.description}</Text>
+                <Text>{marker.description}</Text>
                 <Text>{marker.morada}</Text>
-                <Text style={{float: 'left'}}>
+                <Text>
                   <Image
                     style={{height: 100, width: 100}}
                     source={{uri: marker.img}}
@@ -145,13 +172,55 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  callout: {
-    width: 200,
-    height: 200,
+  CalloutView: {
+    flex: 1,
+    flexDirection: 'row',
   },
-  thumb: {},
-  markerDescription: {},
-  markerTitle: {},
+  CalloutImage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  CalloutText: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  SaveBtn: {
+    paddingRight: 20,
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  bubble: {
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    backgroundColor: '#fff',
+    borderRadius: 6,
+    borderColor: '#ccc',
+    borderWidth: 0.5,
+    padding: 15,
+    width: 150,
+  },
+  arrow: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    borderTopColor: '#fff',
+    borderWidth: 16,
+    alignSelf: 'center',
+    marginTop: -32,
+  },
+  arrowBorder: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    borderTopColor: '#007a87',
+    borderWidth: 16,
+    alignSelf: 'center',
+    marginTop: -0.5,
+  },
+  name: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
 });
 
 export default Map;

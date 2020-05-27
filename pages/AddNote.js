@@ -63,7 +63,7 @@ function AddNote({navigation}) {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => saveNote(title, description, navigation)}>
-          <Text>{translations.Save}</Text>
+          <Text style={styles.SaveBtn}>{translations.Save}</Text>
         </TouchableOpacity>
       ),
     });
@@ -75,14 +75,17 @@ function AddNote({navigation}) {
   return (
     <View>
       <TextInput
+        style={styles.input}
         placeholder={translations.Title}
         autoCorrect={true}
         onChangeText={(text) => setTitle(text)}
       />
 
       <TextInput
+        style={styles.input}
         multiline={true}
         placeholder={translations.Description}
+        textAlignVertical={'top'}
         numberOfLines={10}
         onChangeText={(text) => setDescription(text)}
       />
@@ -95,6 +98,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: 'center',
     justifyContent: 'center',
+  },
+  SaveBtn: {
+    paddingRight: 20,
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  input: {
+    marginTop: 15,
+    marginLeft: 15,
+    backgroundColor: '#FFF',
+    width: '90%',
+    marginBottom: 15,
+    color: '#222',
+    fontSize: 17,
+    borderRadius: 7,
   },
 });
 
