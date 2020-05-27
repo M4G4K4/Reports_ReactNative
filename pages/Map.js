@@ -34,7 +34,6 @@ function Map({route, navigation}) {
   const {translations} = useContext(LocalizationContext);
 
   const subscription = barometer.subscribe(({pressure}) => {
-    console.log(pressure);
     if (pressure >= 550) {
       // night
       setMapStyle(1);
@@ -139,7 +138,7 @@ function Map({route, navigation}) {
         {marker.map((marker) => (
           <Marker
             extraData={del}
-            pinColor={marker.userID == userID ? 'red' : 'red'}
+            pinColor={marker.userID == userID ? 'blue' : 'red'}
             key={marker.ID}
             coordinate={{
               latitude: marker.longitude,
