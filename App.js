@@ -1,27 +1,12 @@
 import 'react-native-gesture-handler';
-import React from 'react';
-
-import {NavigationContainer} from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  Button,
-} from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
+import {StyleSheet, Alert} from 'react-native';
+import firebase from '@react-native-firebase/app';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import AsyncStorage from '@react-native-community/async-storage';
+import messaging, {AuthorizationStatus} from '@react-native-firebase/messaging';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Maps from './pages/Map';
@@ -35,6 +20,7 @@ import EditReport from './pages/EditReport';
 const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">

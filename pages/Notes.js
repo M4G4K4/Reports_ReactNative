@@ -78,7 +78,7 @@ function Notes({route, navigation}) {
       realm.delete(task);
     });
     // Refresh list after delete
-    setRefresh(false);
+    setRefresh(!refresh);
   };
 
   const editNote = (item) => {

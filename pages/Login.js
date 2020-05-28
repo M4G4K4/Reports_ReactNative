@@ -13,6 +13,8 @@ import {
   Dimensions,
 } from 'react-native';
 import {LocalizationContext} from '../services/localization/LocalizationContext';
+import firebase from '@react-native-firebase/app';
+import messaging, {AuthorizationStatus} from '@react-native-firebase/messaging';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
