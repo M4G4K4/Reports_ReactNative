@@ -198,6 +198,9 @@ function AddReport({route, navigation}) {
         .catch((err) => {
           console.log(err);
         });
+
+
+
     }
   };
 

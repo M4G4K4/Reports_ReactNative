@@ -21,6 +21,10 @@ const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
 
+  messaging()
+    .subscribeToTopic('notification')
+    .then(() => console.log('Subscribed to topic!'));
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
