@@ -36,7 +36,7 @@ const translations = {
   pt: {
     WELCOME: 'Bem-vindo à multi-lingua',
     BUTTON: 'b pt',
-    Login: 'Login',
+    Login: 'Entrar',
     Email: 'Email',
     Password: 'Palavra Passe',
     Register: 'Registo',
