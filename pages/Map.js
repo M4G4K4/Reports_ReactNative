@@ -124,6 +124,7 @@ function Map({route, navigation}) {
     return unsubscribe;
   }, [navigation]);
 
+
   return (
     <View style={styles.container}>
       <MapView
