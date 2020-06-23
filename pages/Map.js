@@ -33,6 +33,7 @@ function Map({route, navigation}) {
   const [mapStyle, setMapStyle] = useState(0);
   const {translations} = useContext(LocalizationContext);
 
+
   const subscription = barometer.subscribe(({pressure}) => {
     if (pressure >= 550) {
       // night
